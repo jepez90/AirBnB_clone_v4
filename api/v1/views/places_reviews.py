@@ -21,6 +21,10 @@ def get_reviews(place_id):
     if not place:
         abort(404)
 
+    for review in place.reviews:
+        user = storage.get(User, review.user_id)
+        setattr(review, 'user_full_name',  user.first_name + ' ' + user.last_name)
+
     reviews = [review.to_dict() for review in place.reviews]
 
     return jsonify(reviews)

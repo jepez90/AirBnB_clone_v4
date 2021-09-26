@@ -99,3 +99,65 @@
 .user {
   margin-bottom: 1.5%;
 }
+
+/* styles for reviews section */
+
+.places .reviews {
+    position: relative;
+}
+
+.places .reviews h2 {
+    font-size: 22px;
+    text-align: left;
+    margin: 25px 0px;
+    border-bottom: 1px solid #DDD;
+}
+.places .reviews a {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    width: 58px;
+    text-align: right;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.places .reviews .show-reviews span::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 10%;
+    display: block;
+    border-right: 3px solid #484848;
+    border-bottom: 3px solid #484848;
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg);
+}
+
+
+.places .reviews .hide-reviews span::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 40%;
+    display: block;
+    border-right: 3px solid #484848;
+    border-bottom: 3px solid #484848;
+    width: 8px;
+    height: 8px;
+    transform: rotate(-135deg);
+}
+
+
+.places .reviews li h3 {
+    font-size: 14px;
+    text-align: left;
+    margin: 2px 0px;
+}
+
+.places .reviews li p {
+    font-size: 12px;
+    text-align: justify;
+    margin: 2px 0px 16px 0px;
+}
