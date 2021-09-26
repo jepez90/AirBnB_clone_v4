@@ -1,3 +1,4 @@
+const fetch = window.fetch;
 const URL_API = 'http://localhost:5001/api/v1/';
 
 $().ready(
