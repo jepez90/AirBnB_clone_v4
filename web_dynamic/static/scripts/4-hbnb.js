@@ -1,15 +1,16 @@
-import fetch from 'cross-fetch';
 const URL_API = 'http://localhost:5001/api/v1/';
+const setSelectedAmenities = new Set();
 
 $().ready(
   function () {
-    $('.filters .amenities input:checkbox').change(function (evnt) {
-      checkSelectedAmenities();
-    });
+    $('.filters .amenities input:checkbox').change(checkSelectedAmenities);
 
     document.querySelector('.filters>button').onclick = loadPlaces;
+
+    // borra todas las selecciones para
+    document.querySelectorAll('input').forEach(e => { e.checked = false; });
+
     checkStatus();
-    checkSelectedAmenities();
     loadPlaces();
   }
 );
@@ -18,17 +19,23 @@ $().ready(
  * find all checkboxes selected in the amenities section and then show its names in a h4
  * @return {void} nothing
  */
-function checkSelectedAmenities () {
-  const listNames = [];
-  const listIds = [];
-  $('.filters .amenities input:checked').each((index, element) => {
-    listNames.push(element.dataset.name);
-    listIds.push(element.dataset.id);
-  });
+function checkSelectedAmenities (evnt) {
+  const target = evnt.target;
+  const h4 = document.querySelector('.filters .amenities>h4');
+  let setNames = new Set();
+  if (h4.innerText.trim() !== '') {
+    setNames = new Set(h4.innerText.split(', '));
+  }
+
+  if (target.checked) {
+    setSelectedAmenities.add(target.dataset.id);
+    setNames.add(target.dataset.name);
+  } else {
+    setSelectedAmenities.delete(target.dataset.id);
+    setNames.delete(target.dataset.name);
+  }
   // show the selected amenities in h4
-  $('.filters .amenities>h4').first().text(listNames.join(', '));
-  // store the selected items in the element h4
-  document.querySelector('.filters .amenities>h4').dataset.ids = listIds;
+  h4.innerText = [...setNames].join(', ');
 }
 
 /**
@@ -63,14 +70,10 @@ function checkStatus () {
 function loadPlaces () {
   const PATH = 'places_search/';
   const URL = URL_API + PATH;
-  let data;
+  const searchedData = {};
 
-  let amenityList = document.querySelector('.filters .amenities>h4').dataset.ids;
-  if (amenityList === '') {
-    data = {};
-  } else {
-    amenityList = amenityList.split(',');
-    data = { amenities: amenityList };
+  if (setSelectedAmenities.size !== 0) {
+    searchedData.amenities = [...setSelectedAmenities];
   }
 
   const configPost = {
@@ -79,7 +82,7 @@ function loadPlaces () {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(searchedData)
   };
   fetch(URL, configPost)
     .then(
