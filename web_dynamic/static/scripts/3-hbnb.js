@@ -1,4 +1,3 @@
-import fetch from 'cross-fetch';
 const URL_API = 'http://localhost:5001/api/v1/';
 
 $().ready(
